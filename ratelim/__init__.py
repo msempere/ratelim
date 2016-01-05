@@ -10,6 +10,14 @@ __author_email__ = "anto87@gmail.com"
 __license__ = "MIT"
 __copyright__ = "Copyright (c) 2013-2014 Antonio Lima"
 
+def total_seconds(dt):
+    # Keep backward compatibility with Python 2.6 which doesn't have
+    # this method
+    if hasattr(dt, 'total_seconds'):
+        return dt.total_seconds()
+    else:
+        return (dt.microseconds + (dt.seconds + dt.days * 24 * 3600) * 10**6) / 10**6
+
 class greedy(object):
     def __init__(self, max_calls, time_interval):
         if max_calls <= 0:
@@ -28,7 +36,7 @@ class greedy(object):
 
         if self.__numcalls >= self.__max_calls:
             time_delta = datetime.datetime.now() - self.__last_reset
-            time_delta = int(time_delta.total_seconds()) + 1
+            time_delta = int(total_seconds(time_delta)) + 1
             if time_delta <= self.__time_interval:
                 time.sleep(self.__time_interval - time_delta + 1)
                 self.__numcalls = 0
