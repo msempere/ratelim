@@ -68,7 +68,7 @@ class patient(object):
             return f(*args, **kwargs)
 
         time_delta = now - self.__last_call
-        time_delta = int(time_delta.total_seconds())
+        time_delta = int(total_seconds(time_delta))
         assert time_delta >= 0
         if time_delta <= self.__time_interval:
             to_sleep = self.__time_interval - time_delta
